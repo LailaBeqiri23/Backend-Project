@@ -3,49 +3,63 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-const handelUsernameChange = (e) => {
-  setUsername(e.target.value)
-}
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
 
-const handelEmailChange = (e) => {
-  setEmail(e.target.value)
-}
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-const handelPassswordChange = (e) => {
-  setPassword(e.target.value)
-}
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleRegister = async (e) => {
-    e.preventDefault()
-    const response = await fetch('http://localhost:5000/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        password
-      })
-    })
-    console.log(response)
-    
-  }
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('User registered successfully!');
+        setUsername('');
+        setEmail('');
+        setPassword('');
+      } else {
+        setMessage(data.message || 'Failed to register user');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Failed to register user');
+    }
+  };
 
   return (
-    <>
-     <form onSubmit={handleRegister}>
-      <input type="text" name="username" placeholder="username" onChange={handelUsernameChange}/>
-      <input type="email" name="email" placeholder="Email" onChange={handelEmailChange}/>
-      <input type="password" name="password" placeholder="Password" onChange={handelPassswordChange}/>
-      <input type="submit" value="Register" />
-     </form>
-    </>
-  )
+    <div>
+      <h1>User Registration</h1>
+      <form onSubmit={handleRegister}>
+        <input type="text" name="username" placeholder="Username" value={username} onChange={handleUsernameChange} />
+        <input type="email" name="email" placeholder="Email" value={email} onChange={handleEmailChange} />
+        <input type="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+        <button type="submit">Register</button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
+  );
 }
 
-export default App
+export default App;

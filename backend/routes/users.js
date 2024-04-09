@@ -17,34 +17,37 @@ router.get('/', async (req, res) => {
 
 // POST: crea un nuovo utente
 router.post('/', async (req, res) => {
-  const user = new User(req.body);
+  const { username, email, password } = req.body;
+
   try {
-    const newUser = await user.save();
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    const newUser = new User({ username, email, password });
+    await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-// PUT: aggiorna un utente esistente
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
-    res.json(updatedUser);
-  } catch (error) {
-    res.status(404).json({ message: 'User not found' });
-  }
-});
-
 // DELETE: elimina un utente
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
+
   try {
-    await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     res.json({ message: 'User deleted' });
   } catch (error) {
-    res.status(404).json({ message: 'User not found' });
+    res.status(500).json({ message: error.message });
   }
 });
 
