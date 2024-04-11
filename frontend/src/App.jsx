@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import axios from 'axios'
-
 import './App.css'
+import UserProfile from '../components/userProfile.jsx';
+
+
 
 function App() {
   const [username, setUsername] = useState('');
@@ -69,6 +71,7 @@ function App() {
         <button type="submit">Register</button>
       </form>
       {message && <p>{message}</p>}
+      <UserProfile />
     </div>
   );
 }
