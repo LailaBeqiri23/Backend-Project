@@ -11,7 +11,7 @@ const UserProfile = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/users'); 
-         
+        
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -24,10 +24,12 @@ const UserProfile = () => {
 
 
 
-  const handleDelete = async () => {
+  const handleDelete = async (e, userId) => {
+    e.preventDefault();
     try {
-      const response = await axios.delete('http://localhost:5000/users/:id');
+      const response = await axios.delete(`http://localhost:5000/users/${userId}`);
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting user:', error);
     }
