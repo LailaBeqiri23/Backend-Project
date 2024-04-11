@@ -42,7 +42,7 @@ function App() {
       const response = await axios.post('http://localhost:5000/users', formData);
 
 
-      //const data = await response.json();
+      
 
       if (response.ok) {
         setMessage('User registered successfully!');
