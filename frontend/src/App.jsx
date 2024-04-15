@@ -62,7 +62,7 @@ function App() {
 
   return (
     <div>
-      <h1>User Registration</h1>
+      <h1>Dog Registration 🐕 </h1>
       <form onSubmit={handleRegister}>
         <input type="text" name="username" placeholder="Username" value={username} onChange={handleUsernameChange} />
         <input type="email" name="email" placeholder="Email" value={email} onChange={handleEmailChange} />

@@ -39,7 +39,7 @@ const UserProfile = () => {
     <div>
       {userData ? userData.map((user) => (
         <div key={user._id}>
-          <h2>User Profile</h2>
+          <h2>Dog Profile</h2>
           <img src={user.avatar} alt="User Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
